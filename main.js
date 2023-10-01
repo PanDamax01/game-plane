@@ -95,6 +95,7 @@ const startGame = () => {
     
     document.addEventListener('touchend', function(e) {
         gravity = 0.4;
+        velocityY = 0.4;
     });
 }
 
