@@ -8,15 +8,140 @@ body {
 	display: flex;
 	justify-content: center;
 	align-items: center;
+	min-height: 100vh;
 	color: #eee;
 	background-color: #333;
-	min-height: 100vh;
-	font-family: sans-serif;
+	font-family: 'Carter One', cursive;
 }
 
-.board {
-    background-image: url('img/city.jpg');
-    background-position: right;
-    /* jak jest rano to ma left popoludniu center na przedwierczu right, a na noc osobne */
-    /* background-position: zalezy;  */
+.content {
+	position: relative;
+	width: 100vw;
+	height: 100vh;
+	max-width: 520px;
+}
+
+.content .board {
+	position: absolute;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+	background-image: url('img/city.jpg');
+	background-size: cover;
+}
+
+@media (min-width: 520px) {
+	.content .board {
+		background-size: contain;
+	}
+	
+}
+
+.content .menu {
+	/* display: none; */
+	position: absolute;
+	top: 0;
+	width: 100%;
+	height: 100%;
+	background-image: url('./img/menu.gif');
+	background-position: center;
+	background-size: cover;
+}
+
+.content .btn {
+	position: absolute;
+	bottom: 60px;
+	left: 50%;
+	height: 50px;
+	width: 244px;
+	color: #eee;
+	background: none;
+	border: none;
+	font-weight: bold;
+	font-family: inherit;
+	font-size: 26px;
+	line-height: 26px;
+	text-transform: uppercase;
+	letter-spacing: 1px;
+	transition: transform 0.3s, color .3s;
+	transform: translateX(-50%);
+	cursor: pointer;
+}
+
+.content .btn--hard{
+	display: none;
+}
+
+.content .btn--easy{
+	display: none;
+	bottom: 140px;
+}
+
+.content .btn::before {
+	content: '';
+	position: absolute;
+	bottom: 1px;
+	left: 50%;
+	width: 100%;
+	height: 100%;
+	background-color: #132856;
+	clip-path: polygon(7% 0, 100% 0, 92% 100%, 0% 100%);
+	transform: translateX(-50%);
+	transition: background-color .3s;
+	z-index: -1;
+}
+
+.content .btn::after {
+	content: '';
+	position: absolute;
+	top: -1px;
+	left: 0;
+	width: 100%;
+	height: 100%;
+	border-top: 6px solid #20428f;
+	clip-path: polygon(7% 0, 100% 0, 92% 100%, 0% 100%);
+	transition: border-top .3s;
+	z-index: -1;
+}
+
+.content .icon-play {
+	position: absolute;
+	left: 0;
+	top: 50%;
+	transform: translate(-20%, -50%);
+}
+
+.content .btn:hover {
+	color: #132856;
+}
+
+.content .btn:hover::before {
+	background-color: #ffd500;
+}
+
+.content .btn:hover::after {
+	border-top: 6px solid #fff6c4;
+}
+
+.content .btn:hover > .icon-play {
+	animation: moveRotate .6s linear forwards;
+}
+
+@keyframes moveRotate {
+	0% {
+	  transform: translateX(-20%) translateY(-50%) rotate(0deg);
+	}
+	50% {
+	  transform: translateX(120%) translateY(-50%) rotate(314deg);
+	}
+	55% {
+	  transform: translateX(220%) translateY(-50%) rotate(-180deg);
+	}
+	60%, 80% {
+	  transform: translateX(310%) translateY(-50%) rotate(0deg);
+	}
+	70%,100% {
+	  transform: translateX(290%) translateY(-50%) rotate(0deg);
+	}
 }

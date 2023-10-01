@@ -1,45 +1,69 @@
+let board, boardWidth, boardHeight, context, planeWidth, planeHeight, planeX, planeY, planeImg, plane, pipeWidth, pipeHeight, pipeX, pipeY, topPipeImg,
+bottomPipeImg, velocityX, velocityY, gravity, gameOver, score
 
+const main = () => {
+	let btns = document.querySelectorAll('.btn')
+    board = document.querySelector('.board')
+    settings()
 
-let board, boardWidth = 460, boardHeight = 640, context
-
-// zamienic na plane
-let birdWidth = 124, birdHeight = 64, birdX = boardWidth/8, birdY = boardHeight/2, birdImg
-
-let bird = {
-    x: birdX,
-    y: birdY,
-    width: birdWidth,
-    height: birdHeight
+	btns.forEach((el) => el.addEventListener('click', () => {
+			if (el.classList.contains('btn--play')) {
+				setTimeout(() => {
+					btns[0].style.display = 'none'
+					;[btns[1], btns[2]].forEach((el) => (el.style.display = 'block'))
+				}, 200)
+			} else if (el.classList.contains('btn--easy')) {
+				console.log('easy')
+                startGame()
+			} else {
+				console.log('hard')
+                startGame()
+			}
+		})
+	)
 }
 
-// pipe zaminic na wiezowce
-let pipeArray = []
-let pipeWidth = 80, pipeHeight = 412, pipeX = boardWidth, pipeY = 0
+const settings = () => {
+    // settings board
+    boardWidth = board.offsetWidth
+    boardHeight = board.offsetHeight
 
-let topPipeImg
-let bottomPipeImg
+    // setings plane
+    planeWidth = 110, planeHeight = 34, planeX = boardWidth/8, planeY = boardHeight/2
 
-//physic
-let velocityX = -2
-let velocityY = 0
-let gravity = .4
+    plane = {
+    x: planeX,
+    y: planeY,
+    width: planeWidth,
+    height: planeHeight
+}
 
-let gameOver = false
-let score = 0
+    //towers setting
+    // pipe zaminic na towers
+    pipeArray = []
+    pipeWidth = 80, pipeHeight = 412, pipeX = boardWidth, pipeY = 0
 
-window.onload = function () {
-    board = document.getElementById('board')
+    //physic
+    velocityX = -2
+    velocityY = 0
+    gravity = .4
+
+    gameOver = false
+    score = 0
+
+}
+
+
+const startGame = () => {
+    document.querySelector('.menu').style.display = 'none'
     board.width = boardWidth
     board.height = boardHeight
     context = board.getContext('2d')
 
-    // context.fillStyle = 'green' // zielone tlo
-    // context.fillRect(bird.x, bird.y, bird.width, bird.height)
-
-    birdImg = new Image()
-    birdImg.src = 'img/plane.png'
-    birdImg.onload = function() {
-        context.drawImage(birdImg, bird.x, bird.y, bird.width, bird.height)
+    planeImg = new Image()
+    planeImg.src = 'img/plane.png'
+    planeImg.onload = function() {
+        context.drawImage(planeImg, plane.x, plane.y, plane.width, plane.height)
     }
 
     topPipeImg = new Image()
@@ -47,12 +71,31 @@ window.onload = function () {
 
     bottomPipeImg = new Image()
     bottomPipeImg.src = 'img/bottomSkyscraper.png'
-    
+
     requestAnimationFrame(update)
     // placePipes()
     setInterval(placePipes, 3500)
     document.addEventListener('keydown', moveBrid)
     document.addEventListener('click', moveBrid)
+
+    document.addEventListener('mousedown', function() {
+        gravity = 0;
+        velocityY = .2
+    });
+
+    document.addEventListener('mouseup', function() {
+        gravity = 0.4;
+    });
+
+    document.addEventListener('touchstart', function(event) {
+        event.preventDefault(); 
+        gravity = 0;
+        velocityY = 0.2;
+    });
+    
+    document.addEventListener('touchend', function(e) {
+        gravity = 0.4;
+    });
 }
 
 function update() {
@@ -61,10 +104,10 @@ function update() {
     context.clearRect(0, 0, board.width, board.height)
 
     velocityY += gravity
-    bird.y = Math.max(bird.y + velocityY, 0)
-    context.drawImage(birdImg, bird.x, bird.y, bird.width, bird.height)
+    plane.y = Math.max(plane.y + velocityY, 0)
+    context.drawImage(planeImg, plane.x, plane.y, plane.width, plane.height)
 
-    if (bird.y > board.height) gameOver = true
+    if (plane.y > board.height) gameOver = true
 
     //.zamienisc na forecha lub cos
     for (let i = 0; i < pipeArray.length; i++) {
@@ -72,12 +115,12 @@ function update() {
         pipe.x += velocityX
         context.drawImage(pipe.img, pipe.x, pipe.y, pipe.width, pipe.height)
 
-        if (!pipe.passed && bird.x > pipe.x + pipe.width) {
+        if (!pipe.passed && plane.x > pipe.x + pipe.width) {
             score += .5
             pipe.passed = true
         }
 
-        if(detectCollision(bird, pipe))gameOver = true
+        if(detectCollision(plane, pipe))gameOver = true
     }
 
     while (pipeArray.length > 0 && pipeArray[0].x < -pipeWidth) pipeArray.shift()
@@ -103,7 +146,7 @@ function placePipes() {
         passed: false
     }
     pipeArray.push(topPipe)
-    
+
     let bottomPipe = {
         img: bottomPipeImg,
         x: pipeX,
@@ -116,18 +159,20 @@ function placePipes() {
 }
 
 function moveBrid(e) {
-    // if (e.code === 'Space' || e.code === 'ArrowUp'){
-        velocityY = -6
-    // }
+    if (e.type === 'click' || e.code === 'Space' || e.code === 'ArrowUp') {
+        velocityY = -6;
+    }
 
     if (gameOver) {
-        bird.y = birdY
-        pipeArray = []
-        score = 0
-        gameOver = false
+        plane.y = planeY;
+        pipeArray = [];
+        score = 0;
+        gameOver = false;
     }
 }
 
 function detectCollision(a,b) {
     return a.x < b.x + b.width && a.x + a.width > b.x && a.y < b.y + b.height && a.y + a.height > b.y
 }
+
+document.addEventListener('DOMContentLoaded', main)

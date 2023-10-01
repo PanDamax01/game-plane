@@ -1,16 +1,31 @@
 <!DOCTYPE html>
 <html lang="pl">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="shortcut icon" type=“image/ico href="favicon.png">
     <title>Gra Nasza</title>
 
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Carter+One&display=swap" rel="stylesheet">
+
     <link rel="stylesheet" href="main.css">
 </head>
+
 <body>
-    <canvas id="board" class="board"></canvas>
+    <div class="content">
+        <canvas class="board"></canvas>
+
+        <div class="menu">
+            <button class="btn btn--play"><img src="img/iconPlay.png" alt="" class="icon-play">Graj</button>
+            <button class="btn btn--easy"><img src="img/iconPlay.png" alt="" class="icon-play">Latwy</button>
+            <button class="btn btn--hard"><img src="img/iconPlay.png" alt="" class="icon-play">Trudny</button>
+        </div>
+    </div>
 
     <script src="main.js"></script>
 </body>
+
 </html>
