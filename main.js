@@ -95,7 +95,7 @@ const startGame = () => {
     
     document.addEventListener('touchend', function(e) {
         gravity = 0.4;
-        velocityY = 0.4;
+        velocityY = -6
     });
 }
 
@@ -161,7 +161,7 @@ function placePipes() {
 
 function moveBrid(e) {
     if (e.type === 'click' || e.code === 'Space' || e.code === 'ArrowUp') {
-        velocityY = -6;
+        velocityY = -6
     }
 
     if (gameOver) {
