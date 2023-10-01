@@ -43,12 +43,13 @@ const settings = () => {
 
     //towers setting
     towersArray = []
-    towersWidth = 80, towersHeight = 412, towersX = boardWidth, towersY = 0
+    towersWidth = 80, towersHeight = 512, towersX = boardWidth, towersY = 0
 
     //physic
     velocityX = -2
     velocityY = 0
     gravity = .4
+    setRepeat = 3500
 
     gameOver = false
     score = 0
@@ -81,8 +82,8 @@ const startGame = () => {
 
     requestAnimationFrame(update)
     placetowerss()
-    setInterval(placetowerss, 3500)
-    board.addEventListener('keydown', movePlane)
+    setInterval(placetowerss, setRepeat)
+    document.addEventListener('keydown', movePlane)
     board.addEventListener('click', movePlane)
 
     board.addEventListener('mousedown', () => {
@@ -124,7 +125,7 @@ function update() {
         explosion.style.display = 'block'
         explosion.setAttribute('src', './img/fall-plane.gif')
         gameOverSpan.style.display = 'block'
-        explosionSound.play() // usunąć
+        explosionSound.play() // odhaczyć
 
         setTimeout(() => {
             explosion.style.display = 'none'
@@ -140,6 +141,15 @@ function update() {
             score += .5
             spanScore.textContent = score
             towers.passed = true
+
+            if (score === 7) {
+                velocityX = -3
+                setRepeat = 3000
+            } else if(score === 14){
+                setInterval(placetowerss, setRepeat*4)
+            } else if(score === 20){
+                velocityX = -5
+            }
         }
 
         if(detectCollision(plane, towers)){
@@ -185,7 +195,7 @@ function placetowerss() {
 }
 
 function movePlane(e) {
-    if (e.type === 'click' || e.code === 'Space' || e.code === 'ArrowUp') {
+    if (e.type === 'click' || e.key === 'Space' || e.code === 'ArrowUp') {
         velocityY = -6
     }
 

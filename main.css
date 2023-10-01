@@ -17,7 +17,7 @@ body {
 .content {
 	position: relative;
 	width: 100vw;
-	height: 100vh;
+	height: 80vh;
 	max-width: 520px;
 	overflow: hidden;
 }
@@ -79,8 +79,8 @@ body {
 	top: 0;
 	width: 100%;
 	height: 100%;
-	background-image: url('./img/menu.gif');
-	background-position: center;
+	background-image: url('./img/menu2.gif');
+	background-position: right;
 	background-size: cover;
 	z-index: 2;
 }
